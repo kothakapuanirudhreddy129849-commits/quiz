@@ -13,6 +13,7 @@ A full-stack quiz platform built with React, TypeScript, Node.js, Express, Mongo
 ## Setup
 1. Create a MongoDB Atlas cluster and database named `quizmaster_db`.
 2. Copy `backend/.env.example` to `backend/.env` and set `MONGODB_URI` and `JWT_SECRET`.
+   For local development, the frontend uses `http://localhost:5000` by default. In Vercel, set `VITE_API_URL=https://quiz-c8f5.onrender.com` and redeploy.
 3. Install dependencies:
    ```bash
    npm install
