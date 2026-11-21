@@ -1,2 +1,23 @@
 import express from 'express';import cors from 'cors';import helmet from 'helmet';import cookieParser from 'cookie-parser';import {config} from './config/env';import authRoutes from './routes/authRoutes';import quizRoutes from './routes/quizRoutes';import resultRoutes from './routes/resultRoutes';import userRoutes from './routes/userRoutes';import {errorHandler} from './middleware/error';
-export const app=express();app.use(helmet());app.use(cors({origin:config.frontendOrigin,credentials:true}));app.use(express.json({limit:'1mb'}));app.use(cookieParser());app.get('/api/health',(_req,res)=>res.json({success:true,message:'QuizMaster API is running'}));app.use('/api/auth',authRoutes);app.use('/api/quizzes',quizRoutes);app.use('/api/results',resultRoutes);app.use('/api/users',userRoutes);app.use(errorHandler);
+export const app=express();
+app.use(helmet());
+app.use(cors({
+  origin:(origin,callback)=>{
+    if(!origin||config.frontendOrigins.includes(origin)||/^https:\/\/.*\.vercel\.app$/.test(origin)){
+      callback(null,true);
+    }else{
+      callback(new Error(`Origin not allowed by CORS: ${origin}`));
+    }
+  },
+  credentials:true,
+  methods:['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders:['Content-Type','Authorization'],
+}));
+app.use(express.json({limit:'1mb'}));
+app.use(cookieParser());
+app.get('/api/health',(_req,res)=>res.json({success:true,message:'QuizMaster API is running'}));
+app.use('/api/auth',authRoutes);
+app.use('/api/quizzes',quizRoutes);
+app.use('/api/results',resultRoutes);
+app.use('/api/users',userRoutes);
+app.use(errorHandler);

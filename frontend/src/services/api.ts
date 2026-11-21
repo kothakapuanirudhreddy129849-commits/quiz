@@ -1,4 +1,18 @@
 import axios from 'axios';
-const api=axios.create({baseURL:'http://localhost:5000/api',withCredentials:true,headers:{'Content-Type':'application/json'}});
-api.interceptors.request.use(config=>{const token=localStorage.getItem('quizmaster_token');if(token)config.headers.Authorization=`Bearer ${token}`;return config});
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'https://quiz-c8f5.onrender.com';
+
+const api = axios.create({
+  baseURL: `${API_BASE_URL.replace(/\/$/, '')}/api`,
+  withCredentials: true,
+  headers: {'Content-Type': 'application/json'},
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('quizmaster_token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
 export default api;
