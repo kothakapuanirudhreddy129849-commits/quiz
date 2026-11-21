@@ -1,0 +1,3 @@
+import {Response} from 'express';import Result from '../models/Result';import {AuthRequest} from '../middleware/auth';
+export async function myResults(req:AuthRequest,res:Response){const results=await Result.find({userId:req.userId}).sort({completedAt:-1}).populate('quizId','title category difficulty').lean();res.json({success:true,data:results})}
+export async function getResult(req:AuthRequest,res:Response){const result=await Result.findById(req.params.id).populate('quizId','title category difficulty');if(!result)return res.status(404).json({success:false,message:'Result not found'});if(result.userId.toString()!==req.userId)return res.status(403).json({success:false,message:'Access denied'});res.json({success:true,data:result})}

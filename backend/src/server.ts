@@ -1,0 +1,2 @@
+import mongoose from 'mongoose';import {app} from './app';import {config} from './config/env';
+async function start(){if(!config.mongoUri){console.error('MONGODB_URI is not configured. Copy backend/.env.example to backend/.env');process.exit(1)}await mongoose.connect(config.mongoUri);console.log('Connected to MongoDB Atlas');app.listen(config.port,()=>console.log(`QuizMaster API listening on port ${config.port}`))}start().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,2 @@
+import {Router} from 'express';import {auth} from '../middleware/auth';import {asyncHandler} from '../utils/asyncHandler';import {listQuizzes,getCategories,getQuiz,getQuestions,submitQuiz} from '../controllers/quizController';
+const router=Router();router.get('/',asyncHandler(listQuizzes));router.get('/categories',asyncHandler(getCategories));router.get('/:id',asyncHandler(getQuiz));router.get('/:id/questions',auth,asyncHandler(getQuestions));router.post('/:id/submit',auth,asyncHandler(submitQuiz));export default router;
